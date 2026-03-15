@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
         ServiceResponse response = new ServiceResponse("Not Found", e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
+    @ExceptionHandler(CohortNotFoundException.class)
+    public ResponseEntity<ServiceResponse> handleCohortNotFound (CohortNotFoundException e) {
+        ServiceResponse response = new ServiceResponse("Not Found", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
 }
