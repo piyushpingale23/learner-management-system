@@ -1,22 +1,27 @@
 package com.airtribe.learnermanagementsystem.entity;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
 public class Learner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long learnerId;
-
-    public String learnerName;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long learnerId;
+    private String learnerName;
     public String learnerAddress;
 
     @ManyToMany(mappedBy = "learners")
     private List<Cohort> cohorts;
+
+    public List<Cohort> getCohorts() {
+        return cohorts;
+    }
+
+    public void setCohorts(List<Cohort> cohorts) {
+        this.cohorts = cohorts;
+    }
 
     public String getLearnerName() {
         return learnerName;

@@ -1,9 +1,11 @@
 package com.airtribe.learnermanagementsystem.controller;
 
 import com.airtribe.learnermanagementsystem.entity.Cohort;
+import com.airtribe.learnermanagementsystem.entity.Learner;
 import com.airtribe.learnermanagementsystem.exception.CohortNotFoundException;
 import com.airtribe.learnermanagementsystem.exception.LearnerNotFoundException;
 import com.airtribe.learnermanagementsystem.service.CohortService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -17,17 +19,27 @@ public class CohortController {
     // http://localhost:9090/cohorts
     // Body -> {"cohortName": "Java", "cohortDescription": "Java BE"}
     @PostMapping("/cohorts")
-    public Cohort createCohort (@RequestBody Cohort cohort) {
+    public Cohort createCohort (@Valid @RequestBody Cohort cohort) {
         return cohortService.createCohort(cohort);
     }
 
-
     // We assume that the Learner and Cohort are already created,
-    // and we are mapping one Learner to one Cohort.
+    // and we are mapping one Learner to one Cohort at once.
     // http://localhost:9090/assignLearnerToCohort?learnerId=1&cohortId=1
     @PostMapping("/assignLearnerToCohort")
     public Cohort assignLearnerToCohort (@RequestParam("learnerId") Long learnerId, @RequestParam ("cohortId") Long cohortId) throws CohortNotFoundException, LearnerNotFoundException {
         return cohortService.assignLearnerToCohort(learnerId, cohortId);
+    }
+
+    // Parent–Child relationship: Cohort (parent) → Learner (child).
+    // This endpoint checks whether learners are present or not.
+    // If they are not present, it creates them and assigns the cohort with the given cohortId.
+    // If they are present, it assigns them to the cohort for the respective cohortId.
+    // http://localhost:9090/cohorts/1/learners (Prerequisite: Cohort os created already)
+    // Body -> [{"learnerName": "Jack","learnerAddress": "Pune"}, {"learnerName": "Jane","learnerAddress": "Pune"}]
+    @PostMapping("/cohorts/{cohortId}/learners")
+    public Cohort createAndAssignLearnersToCohort (@PathVariable("cohortId") Long cohortId, @RequestBody List<Learner> learners) throws CohortNotFoundException {
+        return cohortService.createAndAssignLearnersToCohort(cohortId, learners);
     }
 
     // http://localhost:9090/cohorts/1

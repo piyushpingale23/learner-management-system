@@ -8,6 +8,9 @@ import com.airtribe.learnermanagementsystem.repository.CohortRepository;
 import com.airtribe.learnermanagementsystem.repository.LearnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -78,5 +81,31 @@ public class CohortServiceImpl implements CohortService {
     @Override
     public void deleteCohortById(Long cohortId) {
         cohortRepository.deleteById(cohortId);
+    }
+
+    @Override
+    @Transactional
+    public Cohort createAndAssignLearnersToCohort(Long cohortId, List<Learner> learners) throws CohortNotFoundException {
+
+        Optional<Cohort> cohortOptional = cohortRepository.findById(cohortId);
+        if (cohortOptional.isEmpty()) {
+            throw new CohortNotFoundException("Cohort not found with id : " + cohortId);
+        }
+
+        Cohort cohort = cohortOptional.get();
+        List<Learner> managedLearners = new ArrayList<>();
+
+        for (Learner learner : learners) {
+            Learner existingLearner = learnerRepository.findByLearnerNameAndLearnerAddress(learner.getLearnerName(), learner.getLearnerAddress());
+
+            if (existingLearner == null) {
+                managedLearners.add(learnerRepository.save(learner));
+            } else {
+                managedLearners.add(existingLearner);
+            }
+        }
+
+        cohort.getLearners().addAll(managedLearners);
+        return cohortRepository.save(cohort);
     }
 }

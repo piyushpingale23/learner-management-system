@@ -2,16 +2,18 @@
 
 This project is a **Spring Boot Learner Management System** built for learning purposes. It uses **H2 in-memory database** and **Spring Data JPA**.
 
+The primary focus of this project is modeling and designing REST APIs, including entity relationships, API endpoints, and basic CRUD operations.
+
 ---
 
 ## Tech Stack
 
-* Java 17
+* Java 21
 * Spring Boot
 * Spring Web
 * Spring Data JPA
 * H2 Database
-* Maven
+* Gradle
 
 ---
 
@@ -60,7 +62,7 @@ http://localhost:8080/h2-console
 Use the following details on the H2 login page:
 
 | Field        | Value               |
-| ------------ | ------------------- |
+|--------------|---------------------|
 | **JDBC URL** | `jdbc:h2:mem:lmsdb` |
 | **Username** | `sa`                |
 | **Password** | *(leave empty)*     |
@@ -140,3 +142,15 @@ This project is created to understand:
 ---
 
 You are now ready to use the **H2 Console** and explore your database.
+
+---
+
+## Note:
+
+- In a Many-to-Many relationship, normalization is achieved by creating a join table that stores the primary keys of both tables.
+
+- In a One-to-Many / Many-to-One relationship, the primary key of the One side is used as a foreign key in the Many side table.
+
+- In such relationships, the Many side is always the owner of the relationship, while the One side represents the back reference.
+
+- Therefore, the Many-to-One entity is always the owner of the relationship, and the One-to-Many side acts as the back reference.

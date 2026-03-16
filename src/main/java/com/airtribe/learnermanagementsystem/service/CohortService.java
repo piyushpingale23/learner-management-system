@@ -1,6 +1,8 @@
 package com.airtribe.learnermanagementsystem.service;
 
+import com.airtribe.learnermanagementsystem.dto.CohortDTO;
 import com.airtribe.learnermanagementsystem.entity.Cohort;
+import com.airtribe.learnermanagementsystem.entity.Learner;
 import com.airtribe.learnermanagementsystem.exception.CohortNotFoundException;
 import com.airtribe.learnermanagementsystem.exception.LearnerNotFoundException;
 import org.springframework.stereotype.Service;
@@ -20,4 +22,6 @@ public interface CohortService {
     List<Cohort> getAllCohorts();
 
     void deleteCohortById(Long cohortId);
+
+    Cohort createAndAssignLearnersToCohort(Long cohortId, List<Learner> learners) throws CohortNotFoundException;
 }

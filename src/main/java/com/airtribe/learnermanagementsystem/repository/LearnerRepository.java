@@ -7,4 +7,6 @@ import java.util.List;
 public interface LearnerRepository extends JpaRepository<Learner, Long> {
 
     List<Learner> findByLearnerName(String learnerName);
+
+    Learner findByLearnerNameAndLearnerAddress(String learnerName, String learnerAddress);
 }
