@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<String> handleCustomException (CustomException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
+    }
+
     @ExceptionHandler(LearnerNotFoundException.class)
     public ResponseEntity<ServiceResponse> handleLearnerNotFound (LearnerNotFoundException e) {
         ServiceResponse response = new ServiceResponse("Not Found", e.getMessage());

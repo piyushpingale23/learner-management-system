@@ -7,13 +7,13 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CohortDTO {
+@AllArgsConstructor
+public class InstructorDTO {
 
+    private Long instructorId;
+    private String instructorName;
+    private String instructorMobile;
     private Long cohortId;
-    private String cohortName;
-    private String cohortDescription;
-    private Long courseId;
 
 }

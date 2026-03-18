@@ -4,16 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CohortDTO {
+public class CourseDTO {
 
-    private Long cohortId;
-    private String cohortName;
-    private String cohortDescription;
-    private Long courseId;
-
+    private String courseName;
+    private String courseDescription;
+    private List<CohortDTO> cohorts;
 }

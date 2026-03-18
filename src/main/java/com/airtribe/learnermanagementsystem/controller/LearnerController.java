@@ -1,5 +1,6 @@
 package com.airtribe.learnermanagementsystem.controller;
 
+import com.airtribe.learnermanagementsystem.dto.LearnerDTO;
 import com.airtribe.learnermanagementsystem.entity.Learner;
 import com.airtribe.learnermanagementsystem.exception.LearnerNotFoundException;
 import com.airtribe.learnermanagementsystem.service.LearnerService;
@@ -22,7 +23,7 @@ public class LearnerController {
 
     // http://localhost:9090/learners/1
     @GetMapping("/learners/{id}")
-    public Learner getLearnerById (@PathVariable ("id") Long learnerId) throws LearnerNotFoundException {
+    public LearnerDTO getLearnerById (@PathVariable ("id") Long learnerId) throws LearnerNotFoundException {
         return learnerService.getLearnerById(learnerId);
     }
 
@@ -37,8 +38,8 @@ public class LearnerController {
     // http://localhost:9090/learners?id=1
     // http://localhost:9090/learners?name=Piyush
     @GetMapping("/learners")
-    public List<Learner> getAllLearners (@RequestParam (value = "id", required = false) Long id,
-                                         @RequestParam (value = "name", required = false) String name) throws LearnerNotFoundException {
+    public List<LearnerDTO> getAllLearners (@RequestParam (value = "id", required = false) Long id,
+                                            @RequestParam (value = "name", required = false) String name) throws LearnerNotFoundException {
         if (id != null){
             return List.of(learnerService.getLearnerById(id));
         } else if (name != null) {

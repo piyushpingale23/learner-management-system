@@ -73,6 +73,10 @@ Global exception handling solves this.
 
 It applies to **all controllers in the application**.
 
+- @ControllerAdvice is a specialized component in Spring MVC that applies to all controllers globally.
+- Without @ControllerAdvice, you need to handle each exception in controller in try-catch.
+- With @ControllerAdvice, you handle all exceptions in single place.
+
 Example:
 
 ```java
@@ -221,14 +225,13 @@ Example handler:
 ```java
 @ExceptionHandler(UserNotFoundException.class)
 public ResponseEntity<ErrorResponse> handleUserNotFound(UserNotFoundException ex) {
-
     ErrorResponse error = new ErrorResponse();
     error.setMessage(ex.getMessage());
     error.setStatus(HttpStatus.NOT_FOUND.value());
     error.setTimestamp(LocalDateTime.now().toString());
-
-    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-
+    return new ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(error);
+//    return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 }
 ```
 
@@ -315,20 +318,41 @@ public class GlobalExceptionHandler {
 ```text
 Client Request
        ↓
-Controller
+DispatcherServlet (Front Controller)
        ↓
-Service
+HandlerMapping (finds controller)
+       ↓
+Controller Method Executes
+       ↓
+Service Layer Executes
        ↓
 Exception Thrown
        ↓
-@ControllerAdvice Intercepts
+Back to DispatcherServlet
        ↓
-@ExceptionHandler Method Executes
+HandlerExceptionResolver Chain Starts
        ↓
-ResponseEntity Returned
+1. @ExceptionHandler (inside Controller) checked
        ↓
-Client Receives Error Response
+2. @ControllerAdvice (@ExceptionHandler methods) checked
+       ↓
+3. Default Resolvers (if not handled)
+       ↓
+   - ExceptionHandlerExceptionResolver
+   - ResponseStatusExceptionResolver
+   - DefaultHandlerExceptionResolver
+       ↓
+Exception Resolved → Response Created
+       ↓
+Response Sent to Client
 ```
+
+---
+
+## Note:
+- First Spring looks for @ExceptionHandler in the controller.
+- If not found, it checks @ControllerAdvice.
+- If still not found, it uses default exception resolvers like DefaultHandlerExceptionResolver.
 
 ---
 

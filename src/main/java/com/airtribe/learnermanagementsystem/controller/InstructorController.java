@@ -1,10 +1,12 @@
 package com.airtribe.learnermanagementsystem.controller;
 
+import com.airtribe.learnermanagementsystem.dto.InstructorDTO;
 import com.airtribe.learnermanagementsystem.entity.Instructor;
-import com.airtribe.learnermanagementsystem.exception.CourseNotFoundException;
+import com.airtribe.learnermanagementsystem.exception.CohortNotFoundException;
 import com.airtribe.learnermanagementsystem.service.InstructorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,10 +18,11 @@ public class InstructorController {
     @Autowired
     InstructorService instructorService;
 
-    // http://localhost:9090/course/1/instructors
+    // http://localhost:9090/cohort/1/instructors
     // Body -> {"instructorName": "Jack","instructorMobile": "12345"}
-    @PostMapping("/course/{courseId}/instructors")
-    public Instructor createInstructor (@Valid @PathVariable("courseId") Long courseId, @RequestBody Instructor instructor) throws CourseNotFoundException {
-        return instructorService.createInstructor (courseId, instructor);
+    @PostMapping("/cohort/{cohortId}/instructors")
+    public ResponseEntity<InstructorDTO> createInstructor (@PathVariable("cohortId") Long cohortId,
+                                                           @Valid @RequestBody Instructor instructor) throws CohortNotFoundException {
+        return instructorService.createInstructor (cohortId, instructor);
     }
 }

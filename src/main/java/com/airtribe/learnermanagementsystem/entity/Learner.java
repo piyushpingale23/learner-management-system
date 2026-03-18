@@ -1,9 +1,17 @@
 package com.airtribe.learnermanagementsystem.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Learner {
 
     @Id
@@ -14,37 +22,5 @@ public class Learner {
 
     @ManyToMany(mappedBy = "learners")
     private List<Cohort> cohorts;
-
-    public List<Cohort> getCohorts() {
-        return cohorts;
-    }
-
-    public void setCohorts(List<Cohort> cohorts) {
-        this.cohorts = cohorts;
-    }
-
-    public String getLearnerName() {
-        return learnerName;
-    }
-
-    public void setLearnerName(String learnerName) {
-        this.learnerName = learnerName;
-    }
-
-    public Long getLearnerId() {
-        return learnerId;
-    }
-
-    public void setLearnerId(Long learnerId) {
-        this.learnerId = learnerId;
-    }
-
-    public String getLearnerAddress() {
-        return learnerAddress;
-    }
-
-    public void setLearnerAddress(String learnerAddress) {
-        this.learnerAddress = learnerAddress;
-    }
 
 }

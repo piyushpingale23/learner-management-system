@@ -1,3 +1,28 @@
+- Firstly we onboard the course (cohort, instructor, learners becomes null)
+  course has Many Cohorts, Instructors, Learners
+
+- Then we Onboard the Cohort for under any onboarded Course.
+  Now if we fetch the perticular course, we can see the Cohort available under that course. 
+  Also if we fetch any cohort, we can see the under which course that cohort it is.
+
+- Now we onboard the instrucor under the onboarded cource and cohort.
+  If we fetch instructor, we see under which cohort and course it is.
+  One instrucor has Many cohorts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Learner Management System
 
 This project is a **Spring Boot Learner Management System** built for learning purposes. It uses **H2 in-memory database** and **Spring Data JPA**.
