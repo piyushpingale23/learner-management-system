@@ -15,4 +15,9 @@ public class CourseDTO {
     private String courseName;
     private String courseDescription;
     private List<CohortDTO> cohorts;
+
+    public CourseDTO(String courseName, String courseDescription) {
+        this.courseName = courseName;
+        this.courseDescription = courseDescription;
+    }
 }

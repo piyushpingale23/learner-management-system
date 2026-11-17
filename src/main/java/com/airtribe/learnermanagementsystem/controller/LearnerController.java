@@ -4,7 +4,9 @@ import com.airtribe.learnermanagementsystem.dto.LearnerDTO;
 import com.airtribe.learnermanagementsystem.entity.Learner;
 import com.airtribe.learnermanagementsystem.exception.LearnerNotFoundException;
 import com.airtribe.learnermanagementsystem.service.LearnerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -14,11 +16,11 @@ public class LearnerController {
     @Autowired
     LearnerService learnerService;
 
-    // http://localhost:9090/learners
+    // http://localhost:9090/cohorts/2/learners
     // Body -> {"learnerName": "Jack","learnerAddress": "Pune"}
-    @PostMapping("/learners")
-    public Learner addLearner (@RequestBody Learner learner) {
-        return learnerService.addLearner(learner);
+    @PostMapping("/cohorts/{cohortId}/learners")
+    public ResponseEntity<LearnerDTO> addLearner (@PathVariable Long cohortId, @Valid @RequestBody Learner learner) {
+        return learnerService.addLearner(learner,cohortId);
     }
 
     // http://localhost:9090/learners/1

@@ -1,58 +1,212 @@
-- Firstly we onboard the course (cohort, instructor, learners becomes null)
-  course has Many Cohorts, Instructors, Learners
-
-- Then we Onboard the Cohort for under any onboarded Course.
-  Now if we fetch the perticular course, we can see the Cohort available under that course. 
-  Also if we fetch any cohort, we can see the under which course that cohort it is.
-
-- Now we onboard the instrucor under the onboarded cource and cohort.
-  If we fetch instructor, we see under which cohort and course it is.
-  One instrucor has Many cohorts
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Learner Management System
 
-This project is a **Spring Boot Learner Management System** built for learning purposes. It uses **H2 in-memory database** and **Spring Data JPA**.
+A comprehensive **Spring Boot REST API project** built for learning and understanding modern backend application development using Spring Boot, Spring Data JPA, and H2 Database.
 
-The primary focus of this project is modeling and designing REST APIs, including entity relationships, API endpoints, and basic CRUD operations.
+This project demonstrates how to design and develop a complete backend system by implementing REST APIs, layered architecture, entity relationships, data persistence, exception handling, and database integration.
+
+---
+
+## Project Objectives
+
+The primary goal of this project is to learn and implement:
+
+* Spring Boot Fundamentals
+* REST API Development
+* Layered Architecture
+* Spring Data JPA
+* Hibernate ORM
+* Entity Relationship Mapping
+* Database Integration
+* DTO Pattern
+* Exception Handling
+* CRUD Operations
+* API Design Best Practices
 
 ---
 
 ## Tech Stack
 
-* Java 21
-* Spring Boot
-* Spring Web
-* Spring Data JPA
-* H2 Database
-* Gradle
+| Technology      | Version |
+|-----------------|---------|
+| Java            | 21      |
+| Spring Boot     | Latest  |
+| Spring Web      | Latest  |
+| Spring Data JPA | Latest  |
+| Hibernate       | Latest  |
+| H2 Database     | Latest  |
+| Gradle          | Latest  |
 
 ---
 
-##  How to Run the Application
+## Features
 
-### Run using Maven Wrapper
+### Learner Management
+
+* Create Learners
+* Retrieve Learner Details
+* Update Learner Information
+* Delete Learners
+
+### REST API Development
+
+* RESTful Endpoints
+* Request Mapping
+* Path Variables
+* Request Parameters
+* Request Body Validation
+* HTTP Status Codes
+
+### Database Integration
+
+* H2 In-Memory Database
+* Spring Data JPA Repositories
+* Automatic Table Creation
+* SQL Query Logging
+
+### Exception Handling
+
+* Global Exception Handling
+* Custom Exceptions
+* Meaningful Error Responses
+
+### DTO Layer
+
+* Request DTOs
+* Response DTOs
+* Separation of Entity and API Models
+
+---
+
+## Spring Boot Concepts Covered
+
+### Core Spring Boot
+
+* Auto Configuration
+* Dependency Injection
+* Bean Management
+* Application Properties
+* Component Scanning
+
+### Spring Web
+
+* REST Controllers
+* Request Mapping
+* ResponseEntity
+* API Design
+
+### Spring Data JPA
+
+* Repository Pattern
+* CRUD Repository Operations
+* Custom Query Methods
+* Entity Mapping
+
+### Hibernate
+
+* ORM (Object Relational Mapping)
+* Automatic Schema Generation
+* Relationship Mapping
+
+---
+
+## JPA Relationships Covered
+
+### One-to-One
+
+Used when one record is associated with exactly one other record.
+
+Example:
+
+```text
+Learner ↔ Profile
+```
+
+### One-to-Many / Many-to-One
+
+Used when one parent can have multiple child records.
+
+Example:
+
+```text
+Instructor → Courses
+```
+
+Important Points:
+
+* Foreign Key exists on the Many side.
+* Many side is the owner of the relationship.
+* One side acts as the back reference.
+
+### Many-to-Many
+
+Used when multiple records can be associated with multiple records.
+
+Example:
+
+```text
+Learners ↔ Courses
+```
+
+Important Points:
+
+* Implemented using a Join Table.
+* Join Table stores primary keys of both entities.
+* Maintains database normalization.
+
+---
+
+## Project Structure
+
+```text
+src/main/java
+└── com.airtribe.learnermanagementsystem
+    ├── controller
+    ├── service
+    ├── repository
+    ├── entity
+    ├── dto
+    ├── exception
+    └── LearnerManagementSystemApplication
+```
+
+### Package Responsibilities
+
+| Package    | Responsibility          |
+|------------|-------------------------|
+| controller | REST API Endpoints      |
+| service    | Business Logic          |
+| repository | Database Operations     |
+| entity     | JPA Entities            |
+| dto        | Request/Response Models |
+| exception  | Exception Handling      |
+
+---
+
+## Running the Application
+
+### Clone Repository
 
 ```bash
-./mvnw spring-boot:run
+git clone <repository-url>
 ```
 
-OR run directly from your IDE by executing:
+### Navigate to Project
 
+```bash
+cd learner-management-system
 ```
+
+### Run Using Gradle
+
+```bash
+./gradlew bootRun
+```
+
+### Run Using IDE
+
+Execute:
+
+```text
 LearnerManagementSystemApplication.java
 ```
 
@@ -60,9 +214,9 @@ LearnerManagementSystemApplication.java
 
 ## Application URL
 
-Once the application starts successfully, it will run on:
+After successful startup:
 
-```
+```text
 http://localhost:8080
 ```
 
@@ -70,33 +224,25 @@ http://localhost:8080
 
 ## H2 Database Console
 
-H2 is an **in-memory database**, mainly used for development and learning.
+H2 is used as an in-memory database for development and learning purposes.
 
 ### H2 Console URL
 
-Open your browser and go to:
-
-```
+```text
 http://localhost:8080/h2-console
 ```
 
----
+### Login Details
 
-### H2 Console Login Details
-
-Use the following details on the H2 login page:
-
-| Field        | Value               |
-|--------------|---------------------|
-| **JDBC URL** | `jdbc:h2:mem:lmsdb` |
-| **Username** | `sa`                |
-| **Password** | *(leave empty)*     |
-
-Make sure the **JDBC URL matches** the one defined in `application.properties`.
+| Field    | Value            |
+|----------|------------------|
+| JDBC URL | jdbc:h2:mem:LMDB |
+| Username | sa               |
+| Password | (empty)          |
 
 ---
 
-##  H2 Configuration (application.properties)
+## H2 Configuration
 
 ```properties
 spring.h2.console.enabled=true
@@ -109,73 +255,64 @@ spring.datasource.password=
 
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 spring.jpa.hibernate.ddl-auto=update
+
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
 ```
 
 ---
 
-## Important Notes
+## Database Verification
 
-* H2 **in-memory database resets** when the application restarts
-* Tables are created automatically by Hibernate using JPA entities
-* SQL queries will be printed in the console (for learning purposes)
+After starting the application:
 
----
-
-## How to Verify Tables
-
-1. Start the application
-2. Open H2 console
-3. Login using the details above
-4. Click **Connect**
-5. Run SQL query:
+1. Open H2 Console
+2. Login using H2 credentials
+3. Click Connect
+4. Execute:
 
 ```sql
 SELECT * FROM LEARNER;
 ```
 
-(Replace `LEARNER` with your actual table name)
+Replace `LEARNER` with the desired table name.
 
 ---
 
-## Recommended Package Structure
+## Learning Outcomes
 
-```
-com.airtribe.learnermanagementsystem
-│
-├── controller
-├── service
-├── repository
-├── entity
-├── dto
-└── exception
-```
+After completing this project, you will understand:
 
----
-
-## Learning Purpose
-
-This project is created to understand:
-
-* Spring Boot fundamentals
-* REST APIs
-* JPA & Hibernate
-* Database integration using H2
-* Layered architecture
+* Spring Boot Application Flow
+* REST API Design and Development
+* Layered Architecture
+* Dependency Injection
+* JPA and Hibernate
+* Entity Relationships
+* DTO Pattern
+* Exception Handling
+* Database Integration
+* CRUD Operations
+* Repository Pattern
 
 ---
 
-You are now ready to use the **H2 Console** and explore your database.
+## Future Enhancements
+
+* Spring Security
+* JWT Authentication
+* Swagger / OpenAPI Documentation
+* MySQL/PostgreSQL Integration
+* Pagination and Sorting
+* Validation Framework
+* Docker Support
+* Unit and Integration Testing
+* Role-Based Access Control (RBAC)
 
 ---
 
-## Note:
+## Author
 
-- In a Many-to-Many relationship, normalization is achieved by creating a join table that stores the primary keys of both tables.
+**Piyush Ingale**
 
-- In a One-to-Many / Many-to-One relationship, the primary key of the One side is used as a foreign key in the Many side table.
-
-- In such relationships, the Many side is always the owner of the relationship, while the One side represents the back reference.
-
-- Therefore, the Many-to-One entity is always the owner of the relationship, and the One-to-Many side acts as the back reference.
+This project was built as a hands-on learning exercise to gain practical experience in Spring Boot, REST APIs, JPA, Hibernate, and backend application development.

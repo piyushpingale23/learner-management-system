@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import static com.airtribe.learnermanagementsystem.dto.DtoConverter.convertCohortToCohortDTO;
 
 @Service
 public class CohortServiceImpl implements CohortService {
@@ -124,15 +125,6 @@ public class CohortServiceImpl implements CohortService {
             cohortDTOList.add(cohortDTO);
         }
         return cohortDTOList;
-    }
-
-    private CohortDTO convertCohortToCohortDTO(Cohort cohort) {
-        CohortDTO cohortDTO = new CohortDTO();
-        cohortDTO.setCohortId(cohort.getCohortId());
-        cohortDTO.setCohortName(cohort.getCohortName());
-        cohortDTO.setCohortDescription(cohort.getCohortDescription());
-        cohortDTO.setCourseId(cohort.getCourse().getCourseId());
-        return cohortDTO;
     }
 
     @Override

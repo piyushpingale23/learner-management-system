@@ -18,9 +18,9 @@ public class InstructorController {
     @Autowired
     InstructorService instructorService;
 
-    // http://localhost:9090/cohort/1/instructors
+    // http://localhost:9090/cohorts/1/instructors
     // Body -> {"instructorName": "Jack","instructorMobile": "12345"}
-    @PostMapping("/cohort/{cohortId}/instructors")
+    @PostMapping("/cohorts/{cohortId}/instructors")
     public ResponseEntity<InstructorDTO> createInstructor (@PathVariable("cohortId") Long cohortId,
                                                            @Valid @RequestBody Instructor instructor) throws CohortNotFoundException {
         return instructorService.createInstructor (cohortId, instructor);

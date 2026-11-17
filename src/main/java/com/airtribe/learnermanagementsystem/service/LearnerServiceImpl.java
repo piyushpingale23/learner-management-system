@@ -1,14 +1,22 @@
 package com.airtribe.learnermanagementsystem.service;
 
+import com.airtribe.learnermanagementsystem.dto.CohortDTO;
 import com.airtribe.learnermanagementsystem.dto.LearnerDTO;
+import com.airtribe.learnermanagementsystem.entity.Cohort;
 import com.airtribe.learnermanagementsystem.entity.Learner;
+import com.airtribe.learnermanagementsystem.exception.CustomException;
 import com.airtribe.learnermanagementsystem.exception.LearnerNotFoundException;
+import com.airtribe.learnermanagementsystem.repository.CohortRepository;
 import com.airtribe.learnermanagementsystem.repository.LearnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import static com.airtribe.learnermanagementsystem.dto.DtoConverter.convertCohortToCohortDTO;
+import static com.airtribe.learnermanagementsystem.dto.DtoConverter.convertLearnerToLearnerDTO;
 
 @Service
 public class LearnerServiceImpl implements LearnerService{
@@ -16,25 +24,44 @@ public class LearnerServiceImpl implements LearnerService{
     @Autowired
     LearnerRepository learnerRepository;
 
+    @Autowired
+    CohortRepository cohortRepository;
+
     @Override
-    public Learner addLearner(Learner learner) {
-        return learnerRepository.save(learner);
+    public ResponseEntity<LearnerDTO> addLearner(Learner learner, Long cohortId) {
+
+        Optional<Cohort> optionalCohort = cohortRepository.findById(cohortId);
+        if (optionalCohort.isEmpty()) {
+            throw new CustomException("Cohort not found with id - " + cohortId);
+        }
+
+        Learner savedLearner = learnerRepository.save(learner);
+
+        optionalCohort.get().getLearners().add(savedLearner);
+        cohortRepository.save(optionalCohort.get());
+
+        CohortDTO cohortDTO = convertCohortToCohortDTO (optionalCohort.get());
+        LearnerDTO learnerDTO = convertLearnerToLearnerDTO (savedLearner, cohortDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(learnerDTO);
     }
 
     @Override
     public LearnerDTO getLearnerById(Long learnerId) throws LearnerNotFoundException {
 
-        LearnerDTO learnerDTO = new LearnerDTO();
-        if (learnerRepository.findById(learnerId).isPresent()) {
-            Learner learner = learnerRepository.findById(learnerId).get();
+        Optional<Learner> optionalLearner = learnerRepository.findById(learnerId);
 
-            learnerDTO.setLearnerId(learner.getLearnerId());
-            learnerDTO.setLearnerName(learner.getLearnerName());
-            learnerDTO.setLearnerAddress(learner.learnerAddress);
-
-        } else {
+        if (optionalLearner.isEmpty()) {
             throw new LearnerNotFoundException("Learner Not found with Id : " + learnerId);
         }
+
+        LearnerDTO learnerDTO = new LearnerDTO();
+
+        learnerDTO.setLearnerId(optionalLearner.get().getLearnerId());
+        learnerDTO.setLearnerName(optionalLearner.get().getLearnerName());
+        learnerDTO.setLearnerAddress(optionalLearner.get().learnerAddress);
+
         return learnerDTO;
     }
 

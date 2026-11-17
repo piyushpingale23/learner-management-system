@@ -4,11 +4,9 @@ import com.airtribe.learnermanagementsystem.dto.CohortDTO;
 import com.airtribe.learnermanagementsystem.dto.CourseDTO;
 import com.airtribe.learnermanagementsystem.entity.Cohort;
 import com.airtribe.learnermanagementsystem.entity.Course;
-import com.airtribe.learnermanagementsystem.entity.Instructor;
 import com.airtribe.learnermanagementsystem.exception.CustomException;
 import com.airtribe.learnermanagementsystem.repository.CohortRepository;
 import com.airtribe.learnermanagementsystem.repository.CourseRepository;
-import com.airtribe.learnermanagementsystem.repository.InstructorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import static com.airtribe.learnermanagementsystem.dto.DtoConverter.convertCohortToCohortDTO;
+import static com.airtribe.learnermanagementsystem.dto.DtoConverter.convertCourseToCourseDTO;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -25,9 +25,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     CohortRepository cohortRepository;
-
-    @Autowired
-    InstructorRepository instructorRepository;
 
     @Override
     public ResponseEntity<Course> createCourse(Course course) {
@@ -55,16 +52,16 @@ public class CourseServiceImpl implements CourseService {
 
             List<CohortDTO> cohortDTOList = getCohortsUnderCourse(course.getCourseId());
 
-            CourseDTO courseDTO = new CourseDTO();
-            courseDTO.setCourseName(course.getCourseName());
-            courseDTO.setCourseDescription(course.getCourseDescription());
-            courseDTO.setCohorts(cohortDTOList);
+            CourseDTO courseDTO = convertCourseToCourseDTO(course, cohortDTOList);
+
             courseDTOList.add(courseDTO);
         }
 
         return courseDTOList;
 
     }
+
+
 
     @Override
     public CourseDTO getCourseById(Long courseId) {
@@ -76,12 +73,7 @@ public class CourseServiceImpl implements CourseService {
         }
         List<CohortDTO> cohortDTOList = getCohortsUnderCourse(courseId);
 
-        CourseDTO courseDTO = new CourseDTO();
-        courseDTO.setCourseName(courseOptional.get().getCourseName());
-        courseDTO.setCourseDescription(courseOptional.get().getCourseDescription());
-        courseDTO.setCohorts(cohortDTOList);
-
-        return courseDTO;
+        return convertCourseToCourseDTO(courseOptional.get(), cohortDTOList);
 
     }
 
@@ -89,13 +81,7 @@ public class CourseServiceImpl implements CourseService {
 
         List<Cohort> cohortList = cohortRepository.getCohortsByCourseId(courseId);
         List<CohortDTO> cohortDTOList = new ArrayList<>();
-        cohortList.forEach(cohort -> {
-            CohortDTO cohortDTO = new CohortDTO();
-            cohortDTO.setCohortId(cohort.getCohortId());
-            cohortDTO.setCohortName(cohort.getCohortName());
-            cohortDTO.setCohortDescription(cohort.getCohortDescription());
-            cohortDTOList.add(cohortDTO);
-        });
+        cohortList.forEach(cohort -> cohortDTOList.add(convertCohortToCohortDTO(cohort)));
 
         return cohortDTOList;
     }

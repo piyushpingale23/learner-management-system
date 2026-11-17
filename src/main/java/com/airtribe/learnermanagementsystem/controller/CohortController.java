@@ -19,10 +19,10 @@ public class CohortController {
     @Autowired
     CohortService cohortService;
 
-    // http://localhost:9090/course/Java/cohorts
+    // http://localhost:9090/courses/Java/cohorts
     // Body -> {"cohortName": "Java", "cohortDescription": "Java BE"}
     // below api for onboarding the cohort under provided courseName
-    @PostMapping("/course/{courseName}/cohorts")
+    @PostMapping("/courses/{courseName}/cohorts")
     public ResponseEntity<CohortDTO> createCohort (@Valid @RequestBody CohortRequest cohortRequest, @PathVariable String courseName) {
         return cohortService.createCohort(cohortRequest, courseName);
     }
@@ -41,10 +41,10 @@ public class CohortController {
     // If they are present, it assigns them to the cohort for the respective cohortId.
     // http://localhost:9090/cohorts/1/learners (Prerequisite: Cohort is created already)
     // Body -> [{"learnerName": "Jack","learnerAddress": "Pune"}, {"learnerName": "Jane","learnerAddress": "Pune"}]
-    @PostMapping("/cohorts/{cohortId}/learners")
-    public Cohort createAndAssignLearnersToCohort (@PathVariable("cohortId") Long cohortId, @Valid @RequestBody List<Learner> learners) throws CohortNotFoundException {
-        return cohortService.createAndAssignLearnersToCohort(cohortId, learners);
-    }
+//    @PostMapping("/cohorts/{cohortId}/learners")
+//    public Cohort createAndAssignLearnersToCohort (@PathVariable("cohortId") Long cohortId, @Valid @RequestBody List<Learner> learners) throws CohortNotFoundException {
+//        return cohortService.createAndAssignLearnersToCohort(cohortId, learners);
+//    }
 
     // http://localhost:9090/cohorts/1
     @GetMapping("/cohorts/{id}")

@@ -27,6 +27,12 @@ public class Course {
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cohort> cohorts = new ArrayList<>();
 
+    public Course(Long courseId, String courseName, String courseDescription) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseDescription = courseDescription;
+    }
+
     public void addCohort(Cohort cohort) {
         cohorts.add(cohort);
         cohort.setCourse(this);

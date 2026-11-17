@@ -140,6 +140,12 @@ Instructor → Cohorts populated
 
 ---
 
+### Step 5: Create Learner under Cohort
+
+So it assign course, cohort and instructor once
+
+---
+
 ## Key Rules
 
 ### Owner Side Rule
